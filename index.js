@@ -1,18 +1,22 @@
-function maximalSquare(matrix) {
-  if (matrix.length === 0 || matrix[0].length === 0) return 0;
-  const rows = matrix.length;
-  const cols = matrix[0].length;
-  const dp = Array.from({ length: rows + 1 }, () =>
-    Array.from({ length: cols + 1 }, () => 0),
-  );
-  let maxSquare = 0;
-  for (let i = 1; i <= rows; i++) {
-    for (let j = 1; j <= cols; j++) {
-      if (matrix[i - 1][j - 1] === "1") {
-        dp[i][j] = Math.min(dp[i - 1][j - 1], dp[i - 1][j], dp[i][j - 1]) + 1;
-        maxSquare = Math.max(maxSquare, dp[i][j]);
+function threeSum(nums) {
+  nums.sort((a, b) => a - b);
+  const result = [];
+  for (let i = 0; i < nums.length - 2; i++) {
+    if (i === 0 || (i > 0 && nums[i] !== nums[i - 1])) {
+      let low = i + 1;
+      let high = nums.length - 1;
+      const sum = 0 - nums[i];
+      while (low < high) {
+        if (nums[low] + nums[high] === sum) {
+          result.push([nums[i], nums[low], nums[high]]);
+          while (low < high && nums[low] === nums[low + 1]) low++;
+          while (low < high && nums[high] === nums[high - 1]) high--;
+          low++;
+          high--;
+        } else if (nums[low] + nums[high] < sum) low++;
+        else high--;
       }
     }
   }
-  return maxSquare * maxSquare;
+  return result;
 }
